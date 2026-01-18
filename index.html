@@ -1,12 +1,465 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моя организация</title>
+    <title>z3nFarm — Advanced Web3 Automation Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #0a0a0a;
+            --border: #222;
+            --text-main: #ffffff;
+            --text-dim: #888;
+            --accent: #4ade80;
+            --warning: #ffd700;
+        }
+
+        body {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: -1px;
+            color: var(--accent);
+        }
+
+        header .subtitle {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, #1a1a00 0%, #0a0a0a 100%);
+            border: 1px solid var(--warning);
+            border-radius: 4px;
+            padding: 18px 22px;
+            margin-bottom: 35px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .alert-box i {
+            color: var(--warning);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .alert-box .alert-content {
+            flex: 1;
+        }
+
+        .alert-box .alert-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .alert-box .alert-text {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        section {
+            margin-bottom: 45px;
+        }
+
+        section h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 10px;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-link {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 18px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .quick-link:hover {
+            border-color: var(--accent);
+            background: #0d0d0d;
+        }
+
+        .quick-link i {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-top: 3px;
+        }
+
+        .quick-link .link-content {
+            flex: 1;
+        }
+
+        .quick-link .link-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .quick-link .link-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .repo-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .repo-table th {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dim);
+            font-weight: normal;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .repo-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .repo-table tr:hover {
+            background: var(--card-bg);
+        }
+
+        .repo-name {
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-infrastructure {
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .badge-security {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .badge-projects {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .tech-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .tech-item .tech-label {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tech-item .tech-value {
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .yield-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .yield-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #050505 100%);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .yield-card .project-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .yield-card .yield-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .yield-card .yield-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .repo-table {
+                font-size: 0.75rem;
+            }
+
+            .repo-table th,
+            .repo-table td {
+                padding: 10px 8px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Добро пожаловать!</h1>
-    <p>Это сайт нашей организации.</p>
+    <div class="container">
+        <header>
+            <h1>> z3nFarm</h1>
+            <div class="subtitle">
+                Advanced Web3 Automation Hub<br>
+                Professional infrastructure for ZennoPoster/C# multi-accounting, on-chain interactions, and behavioral
+                emulation.
+            </div>
+        </header>
+
+        <div class="alert-box">
+            <i class="fas fa-shield-halved"></i>
+            <div class="alert-content">
+                <div class="alert-title">Private Access Only</div>
+                <div class="alert-text">Most repositories are hidden from the public. If you are a subscriber and don't
+                    see your access, contact <strong>@w3bgr3p</strong> on Telegram.</div>
+            </div>
+        </div>
+
+        <section>
+            <h2>🚀 Quick Start Guide</h2>
+            <div class="quick-links">
+                <a href="#" class="quick-link">
+                    <i class="fas fa-rocket"></i>
+                    <div class="link-content">
+                        <div class="link-title">Environment Setup</div>
+                        <div class="link-desc">Core libraries and ZP settings</div>
+                    </div>
+                </a>
+                <a href="https://github.com/w3bgr3p/z3nCore" class="quick-link" target="_blank">
+                    <i class="fas fa-cube"></i>
+                    <div class="link-content">
+                        <div class="link-title">z3nCore Integration</div>
+                        <div class="link-desc">Base DLL for custom modules</div>
+                    </div>
+                </a>
+                <a href="#" class="quick-link">
+                    <i class="fas fa-user-shield"></i>
+                    <div class="link-content">
+                        <div class="link-title">Account Management</div>
+                        <div class="link-desc">Fingerprinting & proxy standards</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <h2>📂 Repository Overview</h2>
+            <table class="repo-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Repository</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="category-badge badge-infrastructure">Infrastructure</span></td>
+                        <td><span class="repo-name">z3n-farm-manager</span></td>
+                        <td>Central dashboard for controlling farm status and yields</td>
+                    </tr>
+                    <tr>
+                        <td><span class="category-badge badge-security">Security</span></td>
+                        <td><span class="repo-name">anti-detect-presets</span></td>
+                        <td>Custom browser fingerprint configurations for Web3</td>
+                    </tr>
+                    <tr>
+                        <td><span class="category-badge badge-projects">Projects</span></td>
+                        <td><span class="repo-name">module-movement</span></td>
+                        <td>High-load automation for Movement ecosystem</td>
+                    </tr>
+                    <tr>
+                        <td><span class="category-badge badge-projects">Projects</span></td>
+                        <td><span class="repo-name">module-initia</span></td>
+                        <td>Comprehensive on-chain bot for Initia network</td>
+                    </tr>
+                    <tr>
+                        <td><span class="category-badge badge-projects">Projects</span></td>
+                        <td><span class="repo-name">zbsync-pro</span></td>
+                        <td>Advanced profile manager and SQL integrator</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>🛠 Tech Stack & Features</h2>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div class="tech-label">Logic</div>
+                    <div class="tech-value">C# (ZennoPoster / ZennoDroid)</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-label">Networking</div>
+                    <div class="tech-value">WebSocket/HTTP2/gRPC handlers</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-label">Security</div>
+                    <div class="tech-value">Per-account logic randomization</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-label">Database</div>
+                    <div class="tech-value">PostgreSQL / SQLite</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>📊 Proof of Work (Yield History)</h2>
+            <div class="yield-grid">
+                <div class="yield-card">
+                    <div class="project-name">Movement</div>
+                    <div class="yield-amount">$200 – $1500</div>
+                    <div class="yield-label">per account</div>
+                </div>
+                <div class="yield-card">
+                    <div class="project-name">MagicSquare</div>
+                    <div class="yield-amount">$130 – $500</div>
+                    <div class="yield-label">per account</div>
+                </div>
+                <div class="yield-card">
+                    <div class="project-name">Initia</div>
+                    <div class="yield-amount">$70 – $500</div>
+                    <div class="yield-label">per account</div>
+                </div>
+                <div class="yield-card">
+                    <div class="project-name">ChainOpera</div>
+                    <div class="yield-amount">$100 – $500</div>
+                    <div class="yield-label">per account</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🌐 Links & Resources</h2>
+            <div class="footer-links">
+                <a href="https://t.me/w3bgr3p" target="_blank"><i class="fab fa-telegram"></i> Private Telegram</a>
+                <a href="https://teletype.in/@web3grep" target="_blank"><i class="fas fa-book"></i> Public Docs</a>
+                <a href="https://github.com/w3bgr3p" target="_blank"><i class="fab fa-github"></i> GitHub Main</a>
+                <a href="https://t.me/z3nLabs" target="_blank"><i class="fab fa-telegram"></i> z3nLabs</a>
+                <a href="https://discord.gg/zX9ubenG9g" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+            </div>
+        </section>
+
+        <footer>
+            NO SPAM. NO CORPORATE. JUST AUTOMATION.
+        </footer>
+    </div>
 </body>
+
 </html>
